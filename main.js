@@ -19,6 +19,11 @@ function copyToClipboard() {
   }, 2000);
 }
 
+document.getElementById("copyText").addEventListener("keydown", function (e) {
+  if (this.value.slice(-selectedHand.length) === selectedHand && e.key === " ") {
+    e.preventDefault();
+  }
+});
 document.getElementById("copyText").addEventListener("input", function (e) {
   this.value = this.value.replace(/ /g, selectedHand);
 });
