@@ -19,24 +19,44 @@ function copyToClipboard() {
   }, 2000);
 }
 
+function isLastCharHandEmoji(value) {
+  return hands.some((hand) => value.endsWith(hand));
+}
+
 document.getElementById("copyText").addEventListener("keydown", function (e) {
-  if (this.value.slice(-selectedHand.length) === selectedHand && e.key === " ") {
+  if (this.value.length === 0 && e.key === " ") {
+    e.preventDefault();
+  } else if (isLastCharHandEmoji(this.value) && e.key === " ") {
     e.preventDefault();
   }
 });
+
 document.getElementById("copyText").addEventListener("input", function (e) {
   this.value = this.value.replace(/ /g, selectedHand);
 });
 
 let elements = document.getElementsByClassName("bolinha");
 
+if (elements.length > 0) {
+  elements[0].style.outline = "2px solid #58c0f2";
+}
+
+function removeOutlineFromAll() {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].style.outline = "none";
+  }
+}
+
 for (let i = 0; i < elements.length; i++) {
   elements[i].addEventListener("click", function () {
+    removeOutlineFromAll();
     selectedHand = this.id;
     for (let i = 0; i < hands.length; i++) {
       if (selectedHand === "b" + (i + 1)) {
         selectedHand = hands[i];
       }
+      document.getElementById("copyText").focus();
+      this.style.outline = "2px solid #58c0f2";
     }
   });
 }
